@@ -1,7 +1,58 @@
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
+import { useFetch } from "../hooks/useFetch";
+
+// type for pagination
+type Links = {
+    first: string
+    last: string
+    next: string | null
+    prev: string | null
+}
+
+type Meta = {
+    current_page: number
+    from: number
+    last_page: number
+    links: {
+        active: boolean
+        label: string
+        page: number | null
+        url: string | null
+    }[]
+    path: string
+    per_page: number
+    to: number
+    total: number
+}
+// end type for pagination
+
+type Data<T> = {
+    data: T
+    links: Links
+    meta: Meta
+}
+
+type Author = {
+    name: string
+    bio: string
+    avatar: string
+}
+
+interface FetchData<T> {
+    fetchedData: T | null
+    isLoading: boolean
+    fetchError: Error | null
+}
+
 
 export default function HomePage() {
+
+    const {fetchedData, isLoading, fetchError} : FetchData<Data<Author[]>> = useFetch("http://127.0.0.1:8000/api/author")
+    
+    console.log(fetchedData?.data)
+    console.log(isLoading)
+    console.log(fetchError)
     return (
         <>
             <Navbar />
@@ -48,7 +99,7 @@ export default function HomePage() {
                                     </p>
                                 </div>
                                 <div className="mt-4 flex items-center text-sm text-gray-500">
-                                    <span>By Jane Doe</span>
+                                    <span>Bryan Furryan</span>
                                     <span className="mx-2">&bull;</span>
                                     <time dateTime="2024-05-21">May 21, 2024</time>
                                 </div>
