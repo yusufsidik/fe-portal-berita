@@ -1,62 +1,23 @@
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
-import { useFetch } from "../hooks/useFetch";
 
-// type for pagination
-type Links = {
-    first: string
-    last: string
-    next: string | null
-    prev: string | null
-}
-
-type Meta = {
-    current_page: number
-    from: number
-    last_page: number
-    links: {
-        active: boolean
-        label: string
-        page: number | null
-        url: string | null
-    }[]
-    path: string
-    per_page: number
-    to: number
-    total: number
-}
-// end type for pagination
-
-type Data<T> = {
-    data: T
-    links: Links
-    meta: Meta
-}
-
-type Author = {
-    name: string
-    bio: string
-    avatar: string
-}
-
-interface FetchData<T> {
-    fetchedData: T | null
-    isLoading: boolean
-    fetchError: Error | null
-}
-
+// import { useAuthors } from "../api/useAuthors";
+import { useNews } from "../api/useNews";
 
 export default function HomePage() {
 
-    const {fetchedData, isLoading, fetchError} : FetchData<Data<Author[]>> = useFetch("http://127.0.0.1:8000/api/author")
-    
-    console.log(fetchedData?.data)
-    console.log(isLoading)
-    console.log(fetchError)
+    const {fetchedData, isLoading, fetchError} = useNews();
+
+    console.log(fetchedData)
+
+    if(isLoading) return <p>Loading ...</p>
+    if(fetchError) return <p>Error ...</p>
+
+
     return (
         <>
             <Navbar />
-
+            
             {/* Breaking News Ticker */}
             <div className="bg-brand-dark py-2 overflow-hidden">
                 <div className="container mx-auto px-4 flex items-center">
