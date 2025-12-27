@@ -1,5 +1,5 @@
 import { useRef } from "react"
-
+import { Link } from "react-router";
 
 export default function Navbar(){
   const mobileMenu = useRef<HTMLElement>(null);
@@ -12,10 +12,10 @@ export default function Navbar(){
       <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
               {/* logo */}
-              <a href="#" className="flex items-center space-x-2 font-bold text-2xl font-display text-brand">
+              <Link to="/" className="flex items-center space-x-2 font-bold text-2xl font-display text-brand">
                 <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
-                <span>NewsHub</span>
-              </a>
+                <span>PorBerita</span>
+              </Link>
 
               {/* Desktop Navigation */}
               <nav className="hidden md:flex space-x-6">

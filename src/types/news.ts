@@ -6,4 +6,5 @@ export type News = {
   is_featured: number
   category: string
   author: string
+  created_at: string
 }

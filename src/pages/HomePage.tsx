@@ -1,23 +1,20 @@
-import Navbar from "../components/layout/Navbar";
-import Footer from "../components/layout/Footer";
-
-// import { useAuthors } from "../api/useAuthors";
 import { useNews } from "../api/useNews";
+
+// ui
+import { Loading } from "../components/layout/ui/Loading";
+import FeaturedArticle  from "../components/layout/FeaturedArticle";
 
 export default function HomePage() {
 
-    const {fetchedData, isLoading, fetchError} = useNews();
+    const {data:  news, isLoading: loadingNews, error: errorNews} = useNews();
 
-    console.log(fetchedData)
+    if(loadingNews) return <Loading />
+    if(errorNews) return <p>Error ...</p>
 
-    if(isLoading) return <p>Loading ...</p>
-    if(fetchError) return <p>Error ...</p>
-
+    const featured = news?.data[0]
 
     return (
         <>
-            <Navbar />
-            
             {/* Breaking News Ticker */}
             <div className="bg-brand-dark py-2 overflow-hidden">
                 <div className="container mx-auto px-4 flex items-center">
@@ -36,36 +33,15 @@ export default function HomePage() {
                     {/* Main News Feed */}
                     <div className="lg:col-span-3 space-y-8">
                         {/* Featured Article */}
-                        <article className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col md:flex-row">
-                            <img
-                                src="https://images.unsplash.com/photo-1605745341112-424a33f9c0f1?q=80&w=2070"
-                                alt="Featured article image"
-                                className="w-full md:w-1/2 h-64 md:h-auto object-cover"
-                            />
-                            <div className="p-6 flex flex-col justify-between">
-                                <div>
-                                    <a
-                                        href="#"
-                                        className="text-xs font-semibold text-brand uppercase tracking-wide"
-                                    >
-                                        Politics
-                                    </a>
-                                    <h2 className="mt-2 text-3xl font-bold font-display leading-tight">
-                                        Global Leaders Unite for Landmark Climate Summit in Geneva
-                                    </h2>
-                                    <p className="mt-3 text-gray-600">
-                                        In an unprecedented show of unity, world leaders have
-                                        gathered to discuss actionable strategies to combat the
-                                        escalating climate crisis...
-                                    </p>
-                                </div>
-                                <div className="mt-4 flex items-center text-sm text-gray-500">
-                                    <span>Bryan Furryan</span>
-                                    <span className="mx-2">&bull;</span>
-                                    <time dateTime="2024-05-21">May 21, 2024</time>
-                                </div>
-                            </div>
-                        </article>
+                        <FeaturedArticle 
+                            title={featured?.title ?? "No Title"}  
+                            slug={featured?.slug}  
+                            category={featured?.category}
+                            thumbnail={featured?.thumbnail}
+                            content={featured?.content}
+                            author={featured?.author}
+                            createdAt={featured?.created_at}
+                        />
 
                         {/* Latest News Grid */}
                         <section>
@@ -73,10 +49,11 @@ export default function HomePage() {
                                 Latest News
                             </h3>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                
                                 {/* News Card 1 */}
                                 <article className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col">
                                     <img
-                                        src="https://images.unsplash.com/photo-1620712943543-2fd9c197d798?q=80&w=2070"
+                                        src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=2070"
                                         alt="Tech news"
                                         className="w-full h-48 object-cover"
                                     />
@@ -99,6 +76,7 @@ export default function HomePage() {
                                         </div>
                                     </div>
                                 </article>
+
                                 {/* News Card 2 */}
                                 <article className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col">
                                     <img
@@ -210,9 +188,6 @@ export default function HomePage() {
                         </div>
                     </aside>
                 </div>
-
-                {/* footer */}
-                <Footer />
             </main>
         </>
     );
